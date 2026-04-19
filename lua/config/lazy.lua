@@ -44,6 +44,6 @@ require("lazy").setup({
     },
   },
   dev = {
-    path = "~/Coding",
+    path = "~/Projects",
   },
 })

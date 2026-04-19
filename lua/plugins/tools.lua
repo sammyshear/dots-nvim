@@ -1,6 +1,44 @@
 return {
   { "wakatime/vim-wakatime", lazy = false },
   {
+    "nvim-neorg/neorg",
+    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = "*", -- Pin Neorg to the latest stable release
+    dependencies = {
+      "nvim-neorg/tree-sitter-norg",
+      "nvim-neorg/tree-sitter-norg-meta",
+    },
+    config = function()
+      require("neorg").setup({
+        load = {
+          ["core.defaults"] = {},
+          ["core.concealer"] = {},
+          ["core.keybinds"] = {},
+          ["core.highlights"] = {},
+          ["core.ui"] = {},
+          ["core.dirman"] = {
+            config = {
+              workspaces = {
+                notes = "~/Documents/neorg",
+              },
+              default_workspace = "notes",
+            },
+          },
+        },
+      })
+      vim.wo.foldlevel = 99
+      vim.wo.conceallevel = 2
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = {
+      sources = {
+        { name = "neorg" },
+      },
+    },
+  },
+  {
     "sammyshear/sefaria.nvim",
     name = "sefaria.nvim",
     dependencies = {
