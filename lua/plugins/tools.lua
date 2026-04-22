@@ -215,7 +215,11 @@ return {
       workspaces = {
         {
           name = "notes",
-          path = "~/Documents/notes/",
+          path = "~/Notes/",
+        },
+        {
+          name = "youtube",
+          path = "~/Documents/YouTube/",
         },
       },
     },
