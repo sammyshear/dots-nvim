@@ -1,44 +1,6 @@
 return {
   { "wakatime/vim-wakatime", lazy = false },
   {
-    "nvim-neorg/neorg",
-    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
-    version = "*", -- Pin Neorg to the latest stable release
-    dependencies = {
-      "nvim-neorg/tree-sitter-norg",
-      "nvim-neorg/tree-sitter-norg-meta",
-    },
-    config = function()
-      require("neorg").setup({
-        load = {
-          ["core.defaults"] = {},
-          ["core.concealer"] = {},
-          ["core.keybinds"] = {},
-          ["core.highlights"] = {},
-          ["core.ui"] = {},
-          ["core.dirman"] = {
-            config = {
-              workspaces = {
-                notes = "~/Documents/neorg",
-              },
-              default_workspace = "notes",
-            },
-          },
-        },
-      })
-      vim.wo.foldlevel = 99
-      vim.wo.conceallevel = 2
-    end,
-  },
-  {
-    "hrsh7th/nvim-cmp",
-    opts = {
-      sources = {
-        { name = "neorg" },
-      },
-    },
-  },
-  {
     "sammyshear/sefaria.nvim",
     name = "sefaria.nvim",
     dependencies = {
@@ -49,35 +11,6 @@ return {
     version = "*",
   },
   { "dopefishh/vim-praat" },
-  {
-    "nvim-orgmode/orgmode",
-    dependencies = {
-      "nvim-orgmode/org-bullets.nvim",
-      "saghen/blink.cmp",
-    },
-    event = "VeryLazy",
-    config = function()
-      require("orgmode").setup({
-        org_agenda_files = "~/orgmode/**/*",
-        org_default_notes_file = "~/orgmode/refile.org",
-      })
-      require("org-bullets").setup()
-      require("blink.cmp").setup({
-        sources = {
-          per_filetype = {
-            org = { "orgmode" },
-          },
-          providers = {
-            orgmode = {
-              name = "Orgmode",
-              module = "orgmode.org.autocompletion.blink",
-              fallbacks = { "buffer" },
-            },
-          },
-        },
-      })
-    end,
-  },
   {
     "mikavilpas/yazi.nvim",
     event = "VeryLazy",
@@ -129,105 +62,11 @@ return {
   {
     "lambdalisue/vim-suda",
   },
-  --  {
-  --    "3rd/image.nvim",
-  --    config = function()
-  --      return (
-  --        require("image").setup({
-  --          kitty_method = "normal",
-  --          backend = "kitty",
-  --          integrations = {
-  --            markdown = {
-  --              enabled = true,
-  --              clear_in_insert_mode = false,
-  --              download_remote_images = true,
-  --              only_render_image_at_cursor = true,
-  --              filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
-  --            },
-  --            neorg = {
-  --              enabled = true,
-  --              clear_in_insert_mode = false,
-  --              download_remote_images = true,
-  --              only_render_image_at_cursor = false,
-  --              filetypes = { "norg" },
-  --            },
-  --            html = {
-  --              enabled = false,
-  --            },
-  --            css = {
-  --              enabled = false,
-  --            },
-  --          },
-  --          max_width = nil,
-  --          max_height = nil,
-  --          max_width_window_percentage = nil,
-  --          max_height_window_percentage = 50,
-  --          window_overlap_clear_enabled = false, -- toggles images when windows are overlapped
-  --          window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-  --          editor_only_render_when_focused = true, -- auto show/hide images when the editor gains/looses focus
-  --          tmux_show_only_in_active_window = true, -- auto show/hide images in the correct Tmux window (needs visual-activity off)
-  --          hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
-  --        })
-  --      )
-  --    end,
-  --  },
   {
     "klen/nvim-config-local",
     config = function()
       require("config-local").setup()
     end,
-  },
-  {
-    "arminveres/md-pdf.nvim",
-    branch = "main", -- you can assume that main is somewhat stable until releases will be made
-    lazy = true,
-    keys = {
-      {
-        "<leader>o,",
-        function()
-          require("md-pdf").convert_md_to_pdf()
-        end,
-        desc = "Markdown preview",
-      },
-    },
-    opts = {
-      toc = false,
-      pandoc_user_args = {
-        "--pdf-engine=lualatex",
-      },
-    },
-  },
-  {
-    "obsidian-nvim/obsidian.nvim",
-    version = "*", -- recommended, use latest release instead of latest commit
-    lazy = true,
-    event = {
-      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-      -- refer to `:h file-pattern` for more examples
-      "BufReadPre " .. vim.fn.expand("~") .. "Notes/*.md",
-      "BufNewFile " .. vim.fn.expand("~") .. "Notes/*.md",
-      "BufReadPre " .. vim.fn.expand("~") .. "/Documents/YouTube/*.md",
-      "BufNewFile " .. vim.fn.expand("~") .. "/Documents/YouTube/*.md",
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    ---@module 'obsidian'
-    ---@type obsidian.config
-    opts = {
-      legacy_commands = false,
-      workspaces = {
-        {
-          name = "notes",
-          path = "~/Notes/",
-        },
-        {
-          name = "youtube",
-          path = "~/Documents/YouTube/",
-        },
-      },
-    },
   },
   {
     "stevearc/conform.nvim",
@@ -236,6 +75,19 @@ return {
         templ = { "templ" },
         markdown = { "mdsf", "mdslw", "markdownlint-cli2", "markdown-toc" },
       },
+    },
+  },
+  {
+    "NeogitOrg/neogit",
+    lazy = true,
+    dependencies = {
+      "sindrets/diffview.nvim",
+      "m00qek/baleia.nvim",
+      "folke/snacks.nvim",
+    },
+    cmd = "Neogit",
+    keys = {
+      { "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" },
     },
   },
 }
