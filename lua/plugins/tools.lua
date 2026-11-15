@@ -72,6 +72,52 @@ return {
     end,
   },
   {
+    "arminveres/md-pdf.nvim",
+    branch = "main", -- you can assume that main is somewhat stable until releases will be made
+    lazy = true,
+    keys = {
+      {
+        "<leader>o,",
+        function()
+          require("md-pdf").convert_md_to_pdf()
+        end,
+        desc = "Markdown preview",
+      },
+    },
+    opts = {
+      toc = false,
+      pandoc_user_args = {
+        "--pdf-engine=lualatex",
+      },
+    },
+  },
+  {
+    "obsidian-nvim/obsidian.nvim",
+    version = "*", -- recommended, use latest release instead of latest commit
+    lazy = true,
+    event = {
+      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+      -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+      -- refer to `:h file-pattern` for more examples
+      "BufReadPre " .. vim.fn.expand("~") .. "/Notes/*.md",
+      "BufNewFile " .. vim.fn.expand("~") .. "/Notes/*.md",
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    ---@module 'obsidian'
+    ---@type obsidian.config
+    opts = {
+      legacy_commands = false,
+      workspaces = {
+        {
+          name = "notes",
+          path = "~/Notes/",
+        },
+      },
+    },
+  },
+  {
     "stevearc/conform.nvim",
     opts = {
       formatters = {
