@@ -1,0 +1,108 @@
+return {
+  {
+    "saghen/blink.cmp",
+    event = "InsertEnter",
+    dependencies = {
+      {
+        "saghen/blink.compat",
+        optional = true,
+        opts = {},
+      },
+      {
+        "saghen/blink.lib",
+      },
+    },
+    build = function()
+      require("blink.cmp").build():pwait()
+    end,
+    opts = {
+      fuzzy = { implementation = "prefer_rust_with_warning" },
+      keymap = {
+        preset = "default",
+      },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+        providers = {
+          lsp = {
+            min_keyword_length = function(ctx)
+              return ctx.trigger.kind == "manual" and 0 or 2 -- trigger when invoking with shortcut
+            end,
+            score_offset = 0,
+          },
+          path = {
+            min_keyword_length = 0,
+          },
+          snippets = {
+            min_keyword_length = 2,
+            should_show_items = function(ctx)
+              return ctx.trigger.initial_kind ~= "trigger_character" and not require("blink.cmp").snippet_active()
+            end,
+          },
+          buffer = {
+            min_keyword_length = 5,
+            max_items = 5,
+          },
+        },
+      },
+      cmdline = {
+        keymap = {
+          preset = "cmdline",
+        },
+        completion = {
+          list = { selection = { preselect = false } },
+          menu = { auto_show = true },
+        },
+      },
+      completion = {
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 250,
+          treesitter_highlighting = true,
+          window = { border = "rounded" },
+        },
+        list = {
+          selection = { preselect = false, auto_insert = true },
+        },
+        trigger = {
+          show_on_insert_on_trigger_character = false,
+          show_on_accept_on_trigger_character = false,
+        },
+        menu = {
+          border = "rounded",
+          draw = {
+            columns = { { "label", "label_description", gap = 1 }, { "kind_icon" } },
+          },
+        },
+        accept = { auto_brackets = { enabled = true } },
+      },
+    },
+    opts_extend = {
+      "sources.default",
+      "sources.compat",
+    },
+    config = function(_, opts)
+      -- setup compat sources and provider
+      local enabled = opts.sources.default
+      for _, source in ipairs(opts.sources.compat or {}) do
+        opts.sources.providers[source] = vim.tbl_deep_extend(
+          "force",
+          { name = source, module = "blink.compat.source" },
+          opts.sources.providers[source] or {}
+        )
+        if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then
+          table.insert(enabled, source)
+        end
+      end
+
+      -- check if we need to override symbol kinds
+      for _, provider in pairs(opts.sources.providers or {}) do
+        ---@cast provider blink.cmp.SourceProviderConfig|{kind?:string}
+        if provider.kind then
+          require("blink.cmp.types").CompletionItemKind[provider.kind] = provider.kind
+        end
+      end
+
+      require("blink.cmp").setup(opts)
+    end,
+  },
+}

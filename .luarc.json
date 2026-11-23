@@ -1,0 +1,10 @@
+{
+    "diagnostics.disable": [
+        "undefined-doc-name",
+        "undefined-doc-param"
+    ],
+    "diagnostics.globals": [
+        "vim",
+        "Snacks"
+    ]
+}
