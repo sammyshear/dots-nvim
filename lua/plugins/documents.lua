@@ -40,9 +40,9 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    main = "obsidian",
     ---@module 'obsidian'
     ---@type obsidian.config
-    main = "obsidian",
     opts = {
       legacy_commands = false,
       workspaces = {
@@ -56,6 +56,9 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = { "markdown", "markdown.mdx" },
-    opts = {},
+    opts = {
+      -- Let Neovim wrap table rows without adding virtual cell padding.
+      pipe_table = { cell = "raw", wrap = false },
+    },
   },
 }

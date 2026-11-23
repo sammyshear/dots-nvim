@@ -1,1 +1,3 @@
-# my nvim config
+# my (new) nvim config
+
+This is my new NeoVim config now that I've moved away from LazyVim as a base. It now uses [`zpack.nvim`](https://github.com/zuqini/zpack.nvim) on top of the default `vim.pack` to manage plugins, and quite a few things have been removed and refactored in the process. This repository is also [mirrored on GitHub](https://github.com/sammyshear/dots-nvim) where the old config used to live, but the main remote is on [Tangled](https://tangled.org/sammyshear.com/nvim). My old config is available on the `old` branch in case I need to access it for something in the future, but I'm intending for this new config to fully replace it in my actual use.
