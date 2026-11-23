@@ -1,25 +1,4 @@
 return {
-  {
-    "lervag/vimtex",
-    lazy = false, -- lazy-loading will disable inverse search
-    init = function()
-      vim.g.vimtex_mappings_disable = { ["n"] = { "K" } } -- disable `K` as it conflicts with LSP hover
-      vim.g.vimtex_quickfix_method = vim.fn.executable("pplatex") == 1 and "pplatex" or "latexlog"
-      vim.g.vimtex_compiler_latexmk = {
-        build_dir = ".out",
-        options = {
-          "-shell-escape",
-          "-verbose",
-          "-file-line-error",
-          "-interaction=nonstopmode",
-          "-synctex=1",
-        },
-      }
-    end,
-    keys = {
-      { "<localLeader>l", "", desc = "+vimtex", ft = "tex" },
-    },
-  },
   { "flammie/vim-finitestatemorphology" },
   { "dopefishh/vim-praat" },
   {
