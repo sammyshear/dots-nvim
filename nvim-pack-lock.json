@@ -20,6 +20,10 @@
       "rev": "edefef779ab08ce1a4a404713e3012b0d202bd35",
       "src": "https://github.com/catppuccin/nvim"
     },
+    "chezmoi-template.nvim": {
+      "rev": "0ef7791be27844a0fc0da0356467297e182e616e",
+      "src": "https://github.com/dpezto/chezmoi-template.nvim"
+    },
     "conform.nvim": {
       "rev": "016802de402556da54c36bd7359b441266b01cdd",
       "src": "https://github.com/stevearc/conform.nvim"

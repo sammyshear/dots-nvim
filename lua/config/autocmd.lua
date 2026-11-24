@@ -93,5 +93,12 @@ api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "gotmpl",
+  callback = function(event)
+    vim.b[event.buf].snacks_words = false
+  end,
+})
+
 vim.filetype.add({ extension = { mdx = "markdown.mdx" } })
 vim.treesitter.language.register("markdown", "markdown.mdx")

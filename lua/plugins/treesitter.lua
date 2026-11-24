@@ -22,6 +22,8 @@ local parsers = {
   "gomod",
   "gowork",
   "gosum",
+  "gotmpl",
+  "templ",
   "nix",
   "python",
   "rust",
