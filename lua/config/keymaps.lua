@@ -90,11 +90,21 @@ km.set("n", "<leader>cR", function()
   Snacks.rename.rename_file()
 end, { desc = "Rename file" })
 km.set("n", "<leader>.", function()
-  Snacks.scratch()
-end, { desc = "Toggle scratch buffer" })
+  vim.ui.input({ prompt = "Scratch filetype (default: markdown)", completion = "filetype" }, function(filetype)
+    if filetype == nil then
+      return
+    end
+    filetype = vim.trim(filetype)
+    if filetype ~= "" and not filetype:match("^[%w_.-]+$") then
+      vim.notify("Invalid scratch filetype", vim.log.levels.WARN)
+      return
+    end
+    Snacks.scratch({ ft = filetype == "" and "markdown" or filetype })
+  end)
+end, { desc = "Open scratch buffer by filetype" })
 km.set("n", "<leader>S", function()
   Snacks.scratch.select()
-end, { desc = "Select scratch buffer" })
+end, { desc = "Pick a saved scratch buffer" })
 km.set("n", "<leader>bb", "<cmd>buffer #<cr>", { desc = "Alternate buffer" })
 km.set("n", "<leader>`", "<cmd>buffer #<cr>", { desc = "Alternate buffer" })
 km.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })

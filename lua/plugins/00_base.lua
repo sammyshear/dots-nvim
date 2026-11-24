@@ -29,7 +29,32 @@ return {
             local name = vim.fs.basename(cwd)
             return { header = "Project: " .. (name ~= "" and name or cwd), padding = 2 }
           end,
-          { section = "keys", padding = 1 },
+          {
+            function(dashboard)
+              local keys = vim.deepcopy(dashboard.opts.preset.keys)
+              local position = #keys + 1
+              for index, item in ipairs(keys) do
+                if item.key == "n" then
+                  position = index + 1
+                  break
+                end
+              end
+              table.insert(keys, position, {
+                icon = "󰎚 ",
+                key = ".",
+                desc = "New Scratch Buffer",
+                action = "<leader>.",
+              })
+              table.insert(keys, position + 1, {
+                icon = " ",
+                key = "S",
+                desc = "Saved Scratch Buffers",
+                action = "<leader>S",
+              })
+              return keys
+            end,
+            padding = 1,
+          },
           { pane = 2, section = "recent_files", title = "Recent files", limit = 5, padding = 1 },
           {
             pane = 2,
@@ -48,6 +73,7 @@ return {
       indent = { enabled = true, animate = { enabled = false } },
       input = { enabled = true },
       notifier = { enabled = true },
+      scratch = { enabled = true },
       words = { enabled = true },
       terminal = { enabled = true },
       picker = {
